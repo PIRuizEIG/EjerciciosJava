@@ -31,7 +31,7 @@ public class BasicOperationsComparison {
 		System.out.printf("Suma: %d%nResta: %d%nProducto: %d%n",
 				i + j,
 				i - j,
-				i + j);
+				i * j);
 		// Usa una estructura if-else para evitar dividir entre cero y muestra mensajes claros.
 		if (j == 0) System.out.printf("No se puede dividir %d por %d, división por zero%n", i, j);
 		else System.out.printf("División: %d con resto: %d%n", i / j, i % j);

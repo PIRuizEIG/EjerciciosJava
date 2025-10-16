@@ -32,25 +32,29 @@ public class InformeCalificaciones {
 		int		asignaturas;
 		double	promedio;
 		char	calificacion;
+		
 		// Se asignan valores
 		nombre = "Laura Pérez";
 		asignaturas = 5;
 		promedio = 7.86;
 		calificacion = 'B';
+		
 		// System.out.println() para mostrar el nombre del estudiante.
 		System.out.println("Nombre del estudiante:\t" + nombre);
+		
 		/* System.out.print() para mostrar la cantidad de asignaturas y la calificación cualitativa
 		 * en la misma línea.
 		 */
 		System.out.print("Asignaturas: " + asignaturas + ", Calificación cualitativa: " + calificacion + '\n');
+		
 		/* System.out.printf() para mostrar un informe detallado donde el promedio se muestre con dos
 		 * decimales y el nombre se muestre alineado a la izquierda con un ancho de 20 caracteres.
 		 * Alineación a la derecha (por defecto), - indica alineación a la izquierda.
 		 * %.2f Imprime el promedio con 2 decimales.
 		 */
-		// 
 		System.out.printf("Informe: %-20s | Asignaturas: %d | Promedio: %.2f | Calificación: %c%n",
                 nombre, asignaturas, promedio, calificacion);
+		
 		/* Añade un mensaje final usando printf que muestre si el estudiante aprobó o no, dependiendo si el
 		 * promedio es mayor o igual a 6.0, mostrando el texto en mayúsculas si aprobó, y en minúsculas si no.
 		 */
@@ -63,6 +67,8 @@ public class InformeCalificaciones {
 			System.out.printf("Estudiante suspenso con promedio %.2f", promedio);
 		}
 		System.out.println("\n***********************************************************");
+		
+		// Prueba de función
 		nombre = "Luis Soto";
 		asignaturas = 4;
 		promedio = 8.45;

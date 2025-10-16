@@ -22,10 +22,12 @@ package ejercicio1;
 public class Ejercicio1 {
 
 	public static void main(String[] args) {
-
+		// Declaración de variables
 		int stock = 5;
 		double precio = 30;
 		char categoria = 'A';
+		
+		// Mostrar contenido
 		System.out.print("Cantidad en stock: " + stock + ", Categoría: " + categoria + '\n');
 		System.out.println("Precio unitario: " + precio + "€");
 		System.out.printf("Resumen del producto: Categoría %c, Cantidad %d, Precio %.2f€ \n", categoria, stock, precio);
