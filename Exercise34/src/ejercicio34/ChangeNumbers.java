@@ -30,6 +30,7 @@ public class ChangeNumbers {
 	//Método para sustituir, recorrer el array y cambiar el número y lo muestra.
 	
 	public void sustituirYMostrar() {
+		@SuppressWarnings("resource")
 		Scanner keyboard = new Scanner(System.in);
 		System.out.print("Introduce el número que quieres reemplazar: ");
 		int numeroASustituir = keyboard.nextInt();

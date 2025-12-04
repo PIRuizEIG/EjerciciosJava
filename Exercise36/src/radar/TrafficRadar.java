@@ -58,7 +58,7 @@ public class TrafficRadar {
 	/**
 	 * 
 	 */
-	double[][] readings;
+	private double[][] readings;
 
 	/**
 	 * Constructor vacío
@@ -139,27 +139,74 @@ public class TrafficRadar {
 	}
 
 	/**
+	 * Mostrar información del día
+	 * 
+	 * @param max     Velocidad máxima
+	 * @param avg     Velocidad media
+	 * @param tickets Multas en el día
+	 */
+	private void showDayInfo(double max, double avg, int tickets) {
+		System.out.printf("Máxima velocidad: %.0f km/h%n", max);
+		System.out.printf("Velocidad media: %.1f km/h%n", avg);
+		System.out.printf("Multas: %d%n", tickets);
+		System.out.println();
+	}
+
+	/**
+	 * Mostrar información del día
+	 * 
+	 * @param max     Velocidad máxima
+	 * @param avg     Velocidad media
+	 * @param tickets Multas en el día
+	 * @param day     Día a mostrar
+	 */
+	private void showDayInfo(double max, double avg, int tickets, int day) {
+		System.out.printf("Día %d (%s):%n", day + 1, names[day]);
+		System.out.printf("Máxima velocidad: %.0f km/h%n", max);
+		System.out.printf("Velocidad media: %.1f km/h%n", avg);
+		System.out.printf("Multas: %d%n", tickets);
+		System.out.println();
+	}
+
+	/**
+	 * Mostrar información de la semana
+	 * 
+	 * @param max      Velocidad máxima
+	 * @param avg      Velocidad media
+	 * @param total    Suma de velocidades
+	 * @param maxFines Número máximo de multas
+	 * @param maxDay   Nombre del día con más multas
+	 */
+	private void showWeekInfo(double max, double avg, int total, int maxFines, String maxDay) {
+		System.out.println("--- ESTADÍSTICAS SEMANALES ---");
+		System.out.printf("Máxima velocidad registrada: %.0f km/h%n", max);
+		System.out.printf("Velocidad media semanal: %.1f km/h%n", avg);
+		System.out.printf("Total multas a enviar: %d%n", total);
+		System.out.printf("Día con más multas: %s (%d multas)%n", maxDay, maxFines);
+	}
+
+	/**
 	 * Mostrar las estadísticas por día
 	 */
 	public void showDailyStatistics() {
 		System.out.println("--- ESTADÍSTICAS POR DÍA ---\n");
+		// Recorrer los días
 		for (int day = 0; day < getRows(); day++) {
+			// Mostrar información del día e inicializar datos
 			System.out.printf("Día %d (%s):%n", day + 1, names[day]);
 			double max = Double.NEGATIVE_INFINITY;
-			double avg = 0;
+			double sum = 0;
 			int tickets = 0;
+			// Por cada velocidad en el día comparar información con la almacenada
 			for (int reading = 0; reading < getColumns(); reading++) {
 				var newRead = readings[day][reading];
-				avg += newRead;
+				sum += newRead;
 				if (newRead > max)
 					max = newRead;
 				if (newRead > LIMIT)
 					tickets++;
 			}
-			System.out.printf("Máxima velocidad: %.0f km/h%n", max);
-			System.out.printf("Velocidad media: %.1f km/h%n", avg / getColumns());
-			System.out.printf("Multas: %d%n", tickets);
-			System.out.println();
+			showDayInfo(max, sum / getColumns(), tickets);
 		}
 	}
 
@@ -167,39 +214,156 @@ public class TrafficRadar {
 	 * Mostrar las estadísticas por semana
 	 */
 	public void showWeekStatistics() {
-		System.out.println("--- ESTADÍSTICAS SEMANALES ---");
+		// Inicializar y declarar los variables
+
 		double max = Double.NEGATIVE_INFINITY;
-		double avg = 0;
+		double sum = 0;
 		int total = 0;
 		int maxFines = 0;
 		String maxDay = names[0];
+		// Recorrer los días
 		for (int day = 0; day < getRows(); day++) {
 			int amount = 0;
+			// Por cada velocidad en el día comparar información con la almacenada
 			for (int reading = 0; reading < getColumns(); reading++) {
 				var newRead = readings[day][reading];
-				avg += newRead;
+				sum += newRead;
 				if (newRead > max)
 					max = newRead;
 				if (newRead > LIMIT)
 					amount++;
 			}
+			// Calcular media y multa mayor
 			total += amount;
 			if (amount > maxFines) {
 				maxFines = amount;
 				maxDay = names[day];
 			}
 		}
-		System.out.printf("Máxima velocidad registrada: %.0f km/h%n", max);
-		System.out.printf("Velocidad media semanal: %.1f km/h%n", avg / (getColumns() * getRows()));
-		System.out.printf("Total multas a enviar: %d%n", total);
-		System.out.printf("Día con más multas: %s (%d multas)", maxDay, maxFines);
+		// Mostrar la información semanal
+		showWeekInfo(max, sum / (getColumns() * getRows()), total, maxFines, maxDay);
+	}
+
+	/**
+	 * Mostrar todas las estadísticas
+	 */
+	public void showAllStatistics() {
+		System.out.println("--- ESTADÍSTICAS POR DÍA ---\n");
+		double weekMax = Double.NEGATIVE_INFINITY;
+		double weekSum = 0;
+		int weekTotal = 0;
+		int maxFines = 0;
+		String maxDay = names[0];
+		// Recorrer los días
+		for (int day = 0; day < getRows(); day++) {
+			// Mostrar información del día e inicializar datos
+			System.out.printf("Día %d (%s):%n", day + 1, names[day]);
+			double max = Double.NEGATIVE_INFINITY;
+			double sum = 0;
+			int tickets = 0;
+			// Por cada velocidad en el día comparar información con la almacenada
+			for (int reading = 0; reading < getColumns(); reading++) {
+				var newRead = readings[day][reading];
+				sum += newRead;
+				if (newRead > max)
+					max = newRead;
+				if (newRead > LIMIT)
+					tickets++;
+			}
+			showDayInfo(max, sum / getColumns(), tickets);
+			// Calcular media y multa mayor
+			if (weekMax < max)
+				weekMax = max;
+			weekSum += sum;
+			weekTotal += tickets;
+			if (maxFines < tickets) {
+				maxFines = tickets;
+				maxDay = names[day];
+			}
+		}
+		showWeekInfo(weekMax, weekSum / (getColumns() * getRows()), weekTotal, maxFines, maxDay);
+	}
+
+	/**
+	 * Calcular y mostrar todas las estadísticas
+	 */
+	public void showAllStatisticsArray() {
+		DayInfo dayInfo[] = showDailyInfo();
+		showWeekInfo(dayInfo);
+	}
+
+	/**
+	 * Calcular y mostrar la información por días
+	 * 
+	 * @return Objeto con la información de la semana
+	 */
+	private DayInfo[] showDailyInfo() {
+		System.out.println("--- ESTADÍSTICAS POR DÍA ---\n");
+
+		var rows = getRows();
+		DayInfo dayInfo[] = new DayInfo[rows];
+
+		for (int day = 0; day < rows; day++) {
+			dayInfo[day] = showDayInfo(day);
+		}
+
+		return dayInfo;
+	}
+
+	/**
+	 * Calcular y mostrar la información de un día
+	 * 
+	 * @param day Día a calcular
+	 * @return Información del día
+	 */
+	private DayInfo showDayInfo(int day) {
+		var dayInfo = new DayInfo();
+
+		// Por cada velocidad en el día comparar información con la almacenada
+		for (int reading = 0; reading < getColumns(); reading++) {
+			dayInfo.addReading(readings[day][reading]);
+		}
+
+		showDayInfo(dayInfo.getMax(), dayInfo.getAverage(), dayInfo.getTickets(), day);
+		return dayInfo;
+	}
+
+	/**
+	 * Calcular y mostrar la información de la semana
+	 * 
+	 * @param dayInfo Array de días
+	 */
+	private void showWeekInfo(DayInfo[] dayInfo) {
+		double weekMax = Double.NEGATIVE_INFINITY;
+		double weekSum = 0;
+		int weekTotal = 0;
+		int maxFines = 0;
+		String maxDay = names[0];
+
+		for (int day = 0; day < getRows(); day++) {
+
+			var max = dayInfo[day].getMax();
+			var sum = dayInfo[day].getSum();
+			var tickets = dayInfo[day].getTickets();
+
+			if (weekMax < max)
+				weekMax = max;
+			weekSum += sum;
+			weekTotal += tickets;
+			if (maxFines < tickets) {
+				maxFines = tickets;
+				maxDay = names[day];
+			}
+		}
+
+		showWeekInfo(weekMax, weekSum / (getColumns() * getRows()), weekTotal, maxFines, maxDay);
 	}
 
 	public static void main(String args[]) {
 		System.out.println("=== INFORME RADAR DE TRÁFICO - SEMANA 1 ===");
 		System.out.println("Velocidad máxima permitida: 120 km/h\n");
 		var obj = new TrafficRadar();
-		obj.showDailyStatistics();
-		obj.showWeekStatistics();
+		// obj.showAllStatistics();
+		obj.showAllStatisticsArray();
 	}
 }
