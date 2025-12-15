@@ -5,13 +5,13 @@ import java.util.Random;
 /**
  * Representa una captura realizada por un radar con:
  * <ul>
- *   <li>Velocidad del vehículo</li>
- *   <li>Matrícula</li>
- *   <li>Día de la semana</li>
+ * <li>Velocidad del vehículo</li>
+ * <li>Matrícula</li>
+ * <li>Día de la semana</li>
  * </ul>
  *
- * Permite generar una captura aleatoria y mostrarla formateada.
- * Autor: Pablo Illescas
+ * Permite generar una captura aleatoria y mostrarla formateada. Autor: Pablo
+ * Illescas
  */
 public class Captura {
 	/**
@@ -23,6 +23,21 @@ public class Captura {
 	 * Velocidad máxima
 	 */
 	public static final int MAX_SPEED = 200;
+
+	/**
+	 * Velocidad límite de multa
+	 */
+	public static final int SPEED_LIMIT = 120;
+
+	/**
+	 * Velocidad límite de multa de nivel 2
+	 */
+	public static final int LEVEL_2_FINE = 150;
+
+	/**
+	 * Velocidad límite de multa de nivel 3
+	 */
+	public static final int LEVEL_3_FINE = 180;
 
 	/**
 	 * Matrícula mínima
@@ -65,23 +80,29 @@ public class Captura {
 	private int day;
 
 	/**
+	 * Color del coche
+	 */
+	private Color color;
+
+	/**
 	 * Crear captura de velocidad
 	 * 
 	 * @param speed Velocidad del coche
 	 * @param plate Matrícula del coche
 	 * @param date  Fecha de captura
 	 */
-	public Captura(int speed, int plate, int date) {
+	public Captura(int speed, int plate, int date, Color color) {
 		this.reading = speed;
 		this.license = plate;
 		this.day = date;
+		this.color = color;
 	}
-	
+
 	/**
 	 * Crear objeto captura vacío
 	 */
-	public Captura() {}
-
+	public Captura() {
+	}
 
 	/**
 	 * Tomar lectura de velocidad
@@ -91,6 +112,9 @@ public class Captura {
 		reading = rnd.nextInt(MIN_SPEED, MAX_SPEED);
 		license = rnd.nextInt(MIN_MAT, MAX_MAT);
 		day = rnd.nextInt(MIN_DAY, MAX_DAY + 1);
+		
+		var colors = Color.values();
+	    color = colors[rnd.nextInt(colors.length)];
 	}
 
 	/**
@@ -134,5 +158,30 @@ public class Captura {
 	 */
 	public void showInfo() {
 		System.out.printf("Velocidad: %3d Km/h, Matrícula: %03d, Día: %s%n", reading, license, getDayName());
+	}
+
+	/**
+	 * Muestra la información de la captura con colores
+	 */
+	public void showInfoColored() {
+		if (reading >= 120) {
+			// Poner "\u001B[<COLOR>m" antes de una cadena cambia el color del texto
+			// siguiente
+			System.out.print(JavaFormat.RED_BG);
+			System.out.printf("Velocidad: %3d Km/h, Matrícula: %03d, Día: %s, Multa%n", reading, license, getDayName());
+			// "\u001B[0m" restaura el color por defecto
+			System.out.print(JavaFormat.RESET);
+		} else {
+			System.out.printf("Velocidad: %3d Km/h, Matrícula: %03d, Día: %s%n", reading, license, getDayName());
+		}
+	}
+
+	/**
+	 * Getter del color
+	 * 
+	 * @return Color del coche
+	 */
+	public Color getColor() {
+		return color;
 	}
 }
