@@ -1,0 +1,8 @@
+Juan,25
+Maria,30
+Pedro,22
+Ana,28
+Luis,35
+Elena,42
+Pablo,19
+Lucia,31
