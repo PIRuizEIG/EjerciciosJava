@@ -1,0 +1,10 @@
+paula, goofy, gardfiel, perro, mineral, caballo, tom, silvestre, pirita, rocinante, milu, snoopy, gato, pluto,
+animal, javier, bucefalo, pegaso, ayudante_de_santa_claus, cuarzo, laika, persona, pato_lucas
+
+mineral: pirita, cuarzo
+persona: paula, javier
+goofy, pato_lucas
+animal
+->gato: gardfield, tom, silvestre
+->perro: milu, snoopy, pluto, ayudante_de_santa_claus, laika
+->caballo: rocinante, pegaso, bucefalo

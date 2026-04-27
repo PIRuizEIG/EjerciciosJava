@@ -1,0 +1,2 @@
+Propiedades: Dimensiones (alto y ancho), estado (minimizado, normal, maximizado), posición en la pantalla (x, y), escritorio, título, icono.
+Métodos: Minimizar, maximizar, tamaño normal, cerrar, mover, redimensionar.
